@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 import app.todos.model.ToDo
 import app.todos.model.ToDoStatus
 import app.todos.model.ToDoUpdate
-import java.util.*
+import java.util.UUID
 import kotlin.streams.toList
 
 @Service

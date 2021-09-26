@@ -3,7 +3,7 @@ package app.todos.repository
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import app.todos.repository.tables.Todos.*
+import app.todos.repository.tables.Todos.TODOS
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.*

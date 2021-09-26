@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse
 sealed class ApiException(msg: String, val code: Int) : RuntimeException(msg)
 
 class NotFoundException(msg: String, code: Int = HttpStatus.NOT_FOUND.value()) : ApiException(msg, code)
-class ServerException(msg: String, code: Int = HttpStatus.INTERNAL_SERVER_ERROR.value()) : ApiException(msg, code)
 
 @ControllerAdvice
 class DefaultExceptionHandler {
