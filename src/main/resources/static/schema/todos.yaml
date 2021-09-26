@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: ToDos
+  description: Operations on ToDo items
+  version: 0.0.1
+  license:
+    name: GPLv3
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  contact:
+    name: Andrei Alekseenko
+    email: engelier at gmx.de
+
+servers: [ ]
+paths:
+
+  /todos:
+    post:
+      tags:
+        - ToDos
+      operationId: create
+      requestBody:
+        description: Create new ToDo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDo'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDo'
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+
+  /todos/planned:
+    get:
+      tags:
+        - ToDos
+      operationId: getAllPlanned
+      responses:
+        200:
+          description: List of NOT_DONE Todos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDoList'
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+  /todo/{id}:
+    get:
+      tags:
+        - ToDos
+      operationId: details
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDo'
+        404:
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+    put:
+      tags:
+        - ToDos
+      operationId: update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        description: Update ToDo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDoUpdate'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDo'
+        404:
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: ToDo Unique ID
+      schema:
+        type: string
+        format: uuid
+
+
+  schemas:
+
+    ToDoList:
+      type: array
+      default: []
+      items:
+        $ref: '#/components/schemas/ToDo'
+
+    ToDo:
+      type: object
+      required:
+        - description
+        - due_date
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToDoStatus'
+        creation_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        done_date:
+          type: string
+          format: date-time
+
+    ToDoStatus:
+      type: string
+      enum:
+        - NOT_DONE
+        - DONE
+        - PAST_DUE
+
+    ToDoUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - NOT_DONE
+            - DONE
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+  responses:
+
+    Unexpected:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Could not find entity with id.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
