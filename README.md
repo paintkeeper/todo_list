@@ -1,7 +1,7 @@
 # ToDo List
 
 ```
-Test Assesment
+Test Assessment
 ```
 
 #### RESTful API service for operation with ToDo items.
