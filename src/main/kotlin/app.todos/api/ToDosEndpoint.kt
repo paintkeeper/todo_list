@@ -14,7 +14,7 @@ class ToDosEndpoint(private val repository: ToDosRepository) : ToDosApiService {
     override fun create(toDo: ToDo): ToDo = repository.create(
         endDate = toDo.dueDate,
         desc = toDo.description,
-        st = toDo.status?.value ?: ToDoStatus.NOT_DONE.value
+        st = ToDoStatus.NOT_DONE.value
     ).let {
         ToDo(
             uuid = it.uuid,
